@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { validateContactForm } from './core'
 import { api } from '../../utils/api'
+import './NewContact.css'
 
 class NewContact extends PureComponent {
   constructor(props) {
@@ -20,6 +21,7 @@ class NewContact extends PureComponent {
     event.preventDefault()
     
     const form = validateContactForm(event)
+    const formEl = event.target
     
     if (form.errors.length > 0) {
       this.setState({
@@ -30,14 +32,19 @@ class NewContact extends PureComponent {
       
       api.post('/contacts', { ...form })
         .then(({ data }) => {
+          formEl.reset()
+          this.nameInput.focus()
           this.setState({
             validationErrors: [],
-            successMessage: `"${data.name}" was added to the contacts list`
+            successMessage: `"${data.name}" was added to the contacts list.`
+          }, () => {
+            this.props.getContacts()
           })
         })
         .catch(error => {
+          const errorMessage = error.response.status === 409 ? 'Email address already in use' : error.message
           this.setState({
-            validationErrors: [error.message]
+            validationErrors: [errorMessage]
           })
         })
     }
@@ -49,20 +56,23 @@ class NewContact extends PureComponent {
   
   render() {
     return (
-      <div>
-        <form onSubmit={this._submitHandler}>
-          <input type="text" placeholder="Name" ref={nameInput => this.nameInput = nameInput} name="name" />
-          <input type="text" placeholder="Email" name="email" />
-          <input type="number" placeholder="Age" name="age" />
-          <input type="text" placeholder="State" name="state" />
-          <input type="text" placeholder="Job title" name="jobTitle" />
+      <div className="NewContact">
+        <hr/>
+        <form onSubmit={this._submitHandler} className="form-inline">
+          <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Name" ref={nameInput => this.nameInput = nameInput} name="name" />
+          <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Email" name="email" />
+          <input type="number" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Age" name="age" />
+          <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="State" name="state" />
+          <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Job title" name="jobTitle" />
           
-          <button className="btn btn-primary" type="submit">Save</button>
-          <Link to="/contacts">Cancel</Link>
+          <div className="NewContact-buttons">
+            <Link to="/contacts">Cancel</Link>
+            <button className="btn btn-primary" type="submit">Save</button>
+          </div>
         </form>
         
         {this.state.validationErrors.length > 0 ?
-          <div className="alert alert-danger" role="alert">
+          <div className="alert alert-danger NewContact-alert" role="alert">
             <strong>Oops!</strong>
             {this.state.validationErrors.map((error, index) => (
               <div key={index}>- {error}</div>
@@ -72,9 +82,8 @@ class NewContact extends PureComponent {
         }
         
         {this.state.successMessage ?
-          <div className="alert alert-success" role="alert">
-            <strong>Yay!</strong>
-            <div>{this.state.successMessage} <button className="btn btn-link">Add another</button></div>
+          <div className="alert alert-success NewContact-alert" role="alert">
+            <strong>Yay!</strong> {this.state.successMessage}
           </div> :
           null
         }

@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react'
-import { NavLink, Route } from 'react-router-dom'
+import { NavLink, Link, Route } from 'react-router-dom'
 
 import Template from '../Template/Template'
 import NewContact from './NewContact/NewContact'
+import DeleteContact from './DeleteContact/DeleteContact'
+import EditContact from './EditContact/EditContact'
 import { api } from '../utils/api'
 
 class Contacts extends PureComponent {
@@ -12,49 +14,85 @@ class Contacts extends PureComponent {
     this.state = {
       contacts: []
     }
+    
+    this._getContacts = () => this.getContacts()
+    this._deleteContact = contactId => this.deleteContact(contactId)
+    this._updateContact = (contactId, contact) => this.updateContact(contactId, contact)
+  }
+  
+  getContacts() {
+    api.get('/contacts?sort=name')
+      .then(({ data }) => {
+        this.setState({
+          contacts: data._embedded.contacts
+        })
+      })
+      .catch(error => {
+        console.log(error.message)
+      })
+  }
+  
+  deleteContact(contactId) {
+    api.delete(`/contacts/${contactId}`)
+      .then(() => {
+        this.setState({
+          successMessage: 'Contact successfully deleted.'
+        }, () => {
+          this.props.history.push('/contacts')
+          this.getContacts()
+        })
+      })
+  }
+  
+  updateContact(contactId, contact) {
+    api.put(`contacts/${contactId}`, contact)
+      .then(() => {
+        console.log('CONTACT WAS UPDATED')
+      })
   }
   
   componentDidMount() {
-    api.get('/contacts')
-      .then(({ data }) => {
-        this.setState({
-          contacts: data
-        })
-      })
+    this.getContacts()
   }
   
   render() {
     return (
       <Template>
         <NavLink to={`${this.props.match.url}/new`} className="btn btn-success">New contact</NavLink>
-        <Route path={`${this.props.match.url}/new`} component={NewContact} />
+        <Route exact path={`${this.props.match.url}/new`} render={() => <NewContact getContacts={this._getContacts} />} />
         
         {this.state.contacts.length === 0 ?
-          <div className="alert alert-warning" role="alert">
+          <div className="alert alert-warning mt-3" role="alert">
             <strong>Attention!</strong> No contacts to show.
           </div> :
-          <table className="table table-striped table-responsive">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Age</th>
-                <th>State</th>
-                <th>Job Title</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.contacts.map(contact => (
+          <div className="table-responsive mt-3">
+            <table className="table">
+              <thead className="thead-default">
                 <tr>
-                  <th>{contact.name}</th>
-                  <th>{contact.email}</th>
-                  <th>{contact.age}</th>
-                  <th>{contact.state}</th>
-                  <th>{contact.jobTitle}</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Age</th>
+                  <th>State</th>
+                  <th>Job Title</th>
+                  <th>Options</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {this.state.contacts.map(contact => (
+                  <tr key={contact.id}>
+                    <td>{contact.name}</td>
+                    <td>{contact.email}</td>
+                    <td>{contact.age}</td>
+                    <td>{contact.state}</td>
+                    <td>{contact.jobTitle}</td>
+                    <td><Link to={`/contacts/edit/${contact.id}`}>Edit</Link> | <Link to={`/contacts/delete/${contact.id}`}>Delete</Link></td>
+                    <Route exact path={`${this.props.match.url}/edit/${contact.id}`} render={() => <EditContact contactId={contact.id} updateContact={this._updateContact} history={this.props.history} />} />
+                    <Route exact path={`${this.props.match.url}/delete/${contact.id}`} render={() => <DeleteContact contactId={contact.id} deleteContact={this._deleteContact} history={this.props.history} />} />
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         }
       </Template>
     )

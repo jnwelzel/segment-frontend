@@ -1,0 +1,15 @@
+.NewContact {
+  margin-top: 20px;
+}
+
+.NewContact-buttons {
+  margin-top: 10px;
+}
+
+.NewContact-buttons a {
+  margin-right: 10px;
+}
+
+.NewContact-alert {
+  margin-top: 20px;
+}

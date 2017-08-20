@@ -1,0 +1,13 @@
+.DeleteContact {
+  border-radius: 0 0 4px 4px;
+  left: 50%;
+  position: fixed;
+  text-align: center;
+  top: 0%;
+  transform: translate(-50%, 0%);
+  width: 300px;
+}
+
+.DeleteContact strong {
+  cursor: pointer;
+}

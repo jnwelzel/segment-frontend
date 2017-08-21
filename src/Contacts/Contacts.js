@@ -44,13 +44,6 @@ class Contacts extends PureComponent {
       })
   }
   
-  updateContact(contactId, contact) {
-    api.put(`contacts/${contactId}`, contact)
-      .then(() => {
-        console.log('CONTACT WAS UPDATED')
-      })
-  }
-  
   componentDidMount() {
     this.getContacts()
   }
@@ -86,7 +79,7 @@ class Contacts extends PureComponent {
                     <td>{contact.state}</td>
                     <td>{contact.jobTitle}</td>
                     <td><Link to={`/contacts/edit/${contact.id}`}>Edit</Link> | <Link to={`/contacts/delete/${contact.id}`}>Delete</Link></td>
-                    <Route exact path={`${this.props.match.url}/edit/${contact.id}`} render={() => <EditContact contactId={contact.id} updateContact={this._updateContact} history={this.props.history} />} />
+                    <Route exact path={`${this.props.match.url}/edit/${contact.id}`} render={() => <EditContact contact={contact} contactId={contact.id} getContacts={this._getContacts} history={this.props.history} />} />
                     <Route exact path={`${this.props.match.url}/delete/${contact.id}`} render={() => <DeleteContact contactId={contact.id} deleteContact={this._deleteContact} history={this.props.history} />} />
                   </tr>
                 ))}

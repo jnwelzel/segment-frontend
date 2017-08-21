@@ -16,3 +16,12 @@
 .EditContact-save {
   margin-left: 10px;
 }
+
+.EditContact-errors {
+  border-radius: 0 0 4px 4px;
+  left: 50%;
+  position: fixed;
+  top: 0;
+  transform: translate(-50%, 0);
+  width: auto;
+}

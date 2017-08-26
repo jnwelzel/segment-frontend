@@ -12,6 +12,8 @@ class Segmentations extends PureComponent {
     this.state = {
       records: []
     }
+    
+    this._getSegmentations = () => this.fetchDatabaseRecords()
   }
   
   fetchDatabaseRecords() {
@@ -33,13 +35,16 @@ class Segmentations extends PureComponent {
   render() {
     return <Template>
       <NavLink to={`${this.props.match.url}/new`} className="btn btn-success">New segmentation</NavLink>
-      <Route exact path={`${this.props.match.url}/new`} render={() => <NewSegmentation />} />
+      <Route exact path={`${this.props.match.url}/new`} render={() => <NewSegmentation getSegmentations={this._getSegmentations} />} />
       
       {this.state.records.length === 0 ?
         <div className="alert alert-warning mt-3" role="alert">
           <strong>Nothing to show!</strong> Use the button above to create a new segmentation.
         </div> :
-        <div>{this.state.records.map(record => (<div key={record.id}>{record.segmentationName}</div>))}</div>
+        <div>
+          <hr/>
+          {this.state.records.map(record => (<a key={record.id} href="#"><div>{record.segmentationName}</div></a>))}
+        </div>
       }
     </Template>
   }

@@ -58,7 +58,8 @@ class Contacts extends PureComponent {
           <div className="alert alert-warning mt-3" role="alert">
             <strong>Nothing to show!</strong> Use the button above to create a new contact.
           </div> :
-          <div className="table-responsive mt-3">
+          <div className="table-responsive">
+            <hr/>
             <table className="table">
               <thead className="thead-default">
                 <tr>

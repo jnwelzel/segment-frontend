@@ -56,7 +56,7 @@ class Contacts extends PureComponent {
         
         {this.state.contacts.length === 0 ?
           <div className="alert alert-warning mt-3" role="alert">
-            <strong>Attention!</strong> No contacts to show.
+            <strong>Nothing to show!</strong> Use the button above to create a new contact.
           </div> :
           <div className="table-responsive mt-3">
             <table className="table">

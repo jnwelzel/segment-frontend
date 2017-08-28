@@ -8,7 +8,7 @@ const getBaseUrl = () => {
       throw new Error('"REACT_APP_PRODUCTION_API_URL environment variable not found"')
     }
     
-    return process.env.PRODUCTION_API_URL
+    return process.env.REACT_APP_PRODUCTION_API_URL
   } else {
     return LOCAL_API_URL
   }

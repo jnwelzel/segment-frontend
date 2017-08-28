@@ -60,14 +60,8 @@ class NewSegmentation extends PureComponent {
     }
     
     api.post('/segmentations', params)
-      .then(({ data }) => {
-        formEl.reset()
-        this.segNameInput.focus()
-        this.setState({
-          successMessage: `Segmentation "${data.segmentationName}" was created.`
-        }, () => {
-          this.props.getSegmentations()
-        })
+      .then(() => {
+        this.props.history.push('/segmentations')
       })
   }
   
@@ -77,6 +71,7 @@ class NewSegmentation extends PureComponent {
   
   render() {
     return <div className="NewSegmentation">
+      <h4>New Segmentation</h4>
       <hr/>
       <form onSubmit={this._onSubmit}>
         <div>

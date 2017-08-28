@@ -24,7 +24,7 @@ class Contacts extends PureComponent {
     api.get('/contacts?sort=name')
       .then(({ data }) => {
         this.setState({
-          contacts: data._embedded.contacts
+          contacts: data
         })
       })
       .catch(error => {
@@ -51,8 +51,8 @@ class Contacts extends PureComponent {
   render() {
     return (
       <Template>
-        <NavLink to={`${this.props.match.url}/new`} className="btn btn-success">New contact</NavLink>
-        <Route exact path={`${this.props.match.url}/new`} render={() => <NewContact getContacts={this._getContacts} />} />
+        <NavLink to="/contacts/new" className="btn btn-success">New contact</NavLink>
+        <Route exact path={`${this.props.match.path}/new`} render={() => <NewContact getContacts={this._getContacts} />} />
         
         {this.state.contacts.length === 0 ?
           <div className="alert alert-warning mt-3" role="alert">

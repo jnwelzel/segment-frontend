@@ -60,7 +60,7 @@ class NewContact extends PureComponent {
         <hr/>
         <form onSubmit={this._submitHandler} className="form-inline">
           <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Name" ref={nameInput => this.nameInput = nameInput} name="name" />
-          <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Email" name="email" />
+          <input type="email" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Email" name="email" />
           <input type="number" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Age" name="age" />
           <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="State" name="state" />
           <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Job title" name="jobTitle" />

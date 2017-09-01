@@ -27,7 +27,7 @@ class ShowSegmentation extends PureComponent {
     return <div>
       {Object.keys(this.state.segmentation).length > 0 ?
         <div>
-          <h3>{this.state.segmentation.segmentationName} (<Link to={`${this.props.match.url}/edit`}>Edit</Link>)</h3>
+          <h3>{this.state.segmentation.segmentationName} <Link className="btn btn-primary" to={`${this.props.match.url}/edit`}>Edit</Link></h3>
           <hr/>
           {this.state.segmentation.contacts.length > 0 ?
             <div className="table-responsive">

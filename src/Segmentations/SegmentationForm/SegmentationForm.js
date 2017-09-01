@@ -124,7 +124,7 @@ class SegmentationForm extends PureComponent {
   
   render() {
     return <div className="SegmentationForm">
-      <h4>New Segmentation</h4>
+      <h4>{this.props.match.params.segmentationId ? 'Edit Segmentation' : 'New Segmentation'}</h4>
       <hr/>
       <form onSubmit={this._onSubmit}>
         <div>
